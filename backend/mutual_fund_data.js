@@ -1,5 +1,5 @@
-const express = require('express');
 const axios = require('axios');
+const express = require('express');
 require('dotenv').config();
 
 const app = express();
@@ -7,6 +7,20 @@ const port = 3000;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+// Function to clean and handle the data
+function cleanData(data) {
+    return data.map(item => {
+        return {
+            date: new Date(item.date).toLocaleDateString('en-US'), // Format date to MM/DD/YYYY
+            value: parseFloat(item.value).toFixed(2) // Format value to 2 decimal places
+        };
+    });
+}
+
+function calculateMarketReturn(data, years) {
+
+}
 
 // Create an endpoint to fetch SP500 data
 app.get('/api/sp500', async (req, res) => {
@@ -26,31 +40,19 @@ app.get('/api/sp500', async (req, res) => {
         if (start_date) params.observation_start = start_date;
         if (end_date) params.observation_end = end_date;
 
-        // Make the request to FRED API
+        // Fetch data from the API
         const response = await axios.get(fredURL, { params });
 
-        // Send the response back to the client
-        res.json(response.data);
-
+        // Clean, process, and send the data
+        const cleanedData = cleanData(response.data.observations);
+        calculateMarketReturn(cleanedData, 5);
+        res.json(cleanedData);
     } catch (error) {
-        console.error('Error fetching SP500 data:', error.message);
-        res.status(500).json({ 
-            error: 'Failed to fetch SP500 data',
-            message: error.message 
-        });
+        res.status(500).json({ error: error.message });
     }
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).json({ 
-        error: 'Something broke!',
-        message: err.message 
-    });
 });
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running at http://localhost:${port}/api/sp500`);
 });
