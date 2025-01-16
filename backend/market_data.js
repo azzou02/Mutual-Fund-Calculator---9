@@ -5,7 +5,6 @@ require('dotenv').config();
 const app = express();
 const port = 3000;
 
-// Middleware to parse JSON bodies
 app.use(express.json());
 
 // Function to clean and handle the data
@@ -19,7 +18,34 @@ function cleanData(data) {
 }
 
 function calculateMarketReturn(data, years) {
-
+    // Find last valid date and value
+    let lastValidEntry = null
+    data.forEach(entry => {
+        if (entry.value !== "NaN") {
+            lastValidEntry = entry
+        }
+    })
+    
+    // calculate date X years back
+    let endDate = lastValidEntry.date
+    let date = new Date(endDate)
+    let startDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear() - years}`
+    
+    let starting_price = 0
+    let ending_price = parseFloat(lastValidEntry.value)  // We already know this
+    
+    data.forEach(entry => {
+        if (entry.value !== "NaN") {
+            if (entry.date === startDate) {
+                starting_price = parseFloat(entry.value)
+            }
+        }
+    })
+    
+    console.log("Start price - " + endDate + ":", starting_price)
+    console.log("End price - " + startDate + ":", ending_price)
+    
+    return parseFloat(((ending_price - starting_price) / starting_price) * 100).toFixed(2)
 }
 
 // Create an endpoint to fetch SP500 data
@@ -36,7 +62,7 @@ app.get('/api/sp500', async (req, res) => {
             file_type: 'json'
         };
 
-        // Add optional parameters if provided
+        // optional parameters
         if (start_date) params.observation_start = start_date;
         if (end_date) params.observation_end = end_date;
 
@@ -45,8 +71,11 @@ app.get('/api/sp500', async (req, res) => {
 
         // Clean, process, and send the data
         const cleanedData = cleanData(response.data.observations);
-        calculateMarketReturn(cleanedData, 5);
         res.json(cleanedData);
+        
+        // calculate market return
+        let years = 5
+        console.log("The return from the last " + years + " years: " + calculateMarketReturn(cleanedData, years) + " %");
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
