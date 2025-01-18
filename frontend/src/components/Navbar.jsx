@@ -1,33 +1,14 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
-const Navbar = ({ onToggleDarkMode }) => {
-  const [darkMode, setDarkMode] = useState(false);
-
-  const handleToggle = () => {
-    setDarkMode((prev) => !prev);
-    onToggleDarkMode(!darkMode);
-  };
-
+const Navbar = ({ darkMode, setDarkMode }) => {
   return (
-    <nav className="navbar flex items-center space-x-6">
-      <Link to="/" className="hover:text-blue-500">
-        Home
-      </Link>
-      <Link to="/past-data" className="hover:text-blue-500">
-        Past Data
-      </Link>
-      <Link to="/graphs" className="hover:text-blue-500">
-        Graphs
-      </Link>
-      <div className="dark-mode-toggle flex items-center space-x-2">
-        <label htmlFor="darkMode">Dark Mode</label>
-        <input
-          type="checkbox"
-          id="darkMode"
-          checked={darkMode}
-          onChange={handleToggle}
-        />
+    <nav className="bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4">
+      <div className="container mx-auto flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Goldman Sachs</h1>
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded"
+        >
+          {darkMode ? "Light Mode" : "Dark Mode"}
+        </button>
       </div>
     </nav>
   );

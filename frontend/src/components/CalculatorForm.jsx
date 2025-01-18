@@ -1,75 +1,108 @@
 import React, { useState } from "react";
 
 const CalculatorForm = ({ onCalculate }) => {
-  const [mutualFund, setMutualFund] = useState("");
-  const [initialAmount, setInitialAmount] = useState("");
-  const [duration, setDuration] = useState("");
+  const [formData, setFormData] = useState({
+    initialInvestment: "",
+    duration: "",
+    mutualFund: "",
+  });
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.initialInvestment || formData.initialInvestment <= 0) {
+      newErrors.initialInvestment = "Please enter a valid initial investment amount.";
+    }
+    if (!formData.duration || formData.duration <= 0) {
+      newErrors.duration = "Please enter a valid duration in years.";
+    }
+    if (!formData.mutualFund) {
+      newErrors.mutualFund = "Please select a mutual fund.";
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!mutualFund || !initialAmount || !duration) {
-      alert("Please fill out all fields");
-      return;
+    if (validateForm()) {
+      onCalculate(formData);
     }
-    onCalculate({
-      mutualFund,
-      initialAmount: parseFloat(initialAmount),
-      duration: parseInt(duration),
-    });
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
-    <div className="form-container">
-      <form onSubmit={handleSubmit} className="calculator-form">
-        {/* Mutual Fund Input */}
-        <div className="form-group">
-          <label className="form-label">
-            Mutual Fund
-            <input
-              type="text"
-              className="form-input"
-              value={mutualFund}
-              onChange={(e) => setMutualFund(e.target.value)}
-              placeholder="Enter Mutual Fund"
-            />
-          </label>
-        </div>
+    <form className="space-y-4" onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="initial-investment" className="block font-semibold mb-2">
+          Initial Investment Amount
+        </label>
+        <input
+          type="number"
+          id="initial-investment"
+          name="initialInvestment"
+          value={formData.initialInvestment}
+          onChange={handleInputChange}
+          placeholder="Enter initial amount"
+          className={`w-full p-3 rounded-lg ${
+            errors.initialInvestment ? "border-red-500" : "border-gray-300"
+          } border-b-2 focus:outline-none focus:border-indigo-500 dark:border-gray-600 dark:bg-black`}
+        />
+        {errors.initialInvestment && (
+          <p className="text-red-500 text-sm mt-1">{errors.initialInvestment}</p>
+        )}
+      </div>
 
-        {/* Initial Investment Amount Input */}
-        <div className="form-group">
-          <label className="form-label">
-            Initial Investment Amount
-            <input
-              type="number"
-              className="form-input"
-              value={initialAmount}
-              onChange={(e) => setInitialAmount(e.target.value)}
-              placeholder="Enter Initial Investment Amount"
-            />
-          </label>
-        </div>
+      <div>
+        <label htmlFor="duration" className="block font-semibold mb-2">
+          Duration (years)
+        </label>
+        <input
+          type="number"
+          id="duration"
+          name="duration"
+          value={formData.duration}
+          onChange={handleInputChange}
+          placeholder="Enter duration in years"
+          className={`w-full p-3 rounded-lg ${
+            errors.duration ? "border-red-500" : "border-gray-300"
+          } border-b-2 focus:outline-none focus:border-indigo-500 dark:border-gray-600 dark:bg-black`}
+        />
+        {errors.duration && <p className="text-red-500 text-sm mt-1">{errors.duration}</p>}
+      </div>
 
-        {/* Duration Input */}
-        <div className="form-group">
-          <label className="form-label">
-            Duration (years)
-            <input
-              type="number"
-              className="form-input"
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-              placeholder="Enter Duration in years"
-            />
-          </label>
-        </div>
+      <div>
+        <label htmlFor="mutual-fund" className="block font-semibold mb-2">
+          Select Mutual Fund
+        </label>
+        <select
+          id="mutual-fund"
+          name="mutualFund"
+          value={formData.mutualFund}
+          onChange={handleInputChange}
+          className={`w-full p-3 rounded-lg ${
+            errors.mutualFund ? "border-red-500" : "border-gray-300"
+          } border-b-2 focus:outline-none focus:border-indigo-500 dark:border-gray-600 dark:bg-black`}
+        >
+          <option value="">Select a fund</option>
+          <option value="fund1">Fund 1</option>
+          <option value="fund2">Fund 2</option>
+          <option value="fund3">Fund 3</option>
+        </select>
+        {errors.mutualFund && <p className="text-red-500 text-sm mt-1">{errors.mutualFund}</p>}
+      </div>
 
-        {/* Submit Button */}
-        <button type="submit" className="form-button">
-          Calculate
-        </button>
-      </form>
-    </div>
+      <button
+        type="submit"
+        className="w-40 bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 focus:ring focus:ring-indigo-500"
+      >
+        Calculate
+      </button>
+    </form>
   );
 };
 
