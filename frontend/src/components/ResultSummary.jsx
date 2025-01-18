@@ -2,8 +2,8 @@ import React from "react";
 
 const ResultSummary = ({ result }) => {
   return (
-    <div className="result-container">
-      <h2 className="result-title">Result Summary</h2>
+    <div className="bg-gray-50 dark:bg-gray-700 p-4">
+      <h1 className="text-3xl font-bold mb-6">Result Summary</h1>
       <div className="result-overview">
         <p>
           <strong>Total Balance (USD):</strong>{" "}
