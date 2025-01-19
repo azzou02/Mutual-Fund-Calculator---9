@@ -1,12 +1,15 @@
 const { getMarketReturn } = require('./market_data');
+const { getBeta } = require('./beta_data');
 
 const RISK_FREE_RATE = 0.0479; // from US Treasury
 
 async function calculate(ticker, amount, duration) {
   try {
     const marketReturnRate = await getMarketReturn(1);
-    // const beta = await getBeta(ticker);
-    return futureInvestmentValue(amount, duration, 1, marketReturnRate);
+    const beta = await getBeta(ticker);
+    // console.log("marketReturnRate:" + marketReturnRate);
+    // console.log("beta:" + beta);
+    return futureInvestmentValue(amount, duration, beta, marketReturnRate);
   } catch (error) {
     console.error('Error calculating future value:', error);
     throw error;
@@ -22,4 +25,13 @@ function futureInvestmentValue(principal, years, beta, marketReturnRate)  {
   return futureValue;
 }
 
-calculate('FXAIX', 1000, 7).then(console.log).catch(console.error);
+(async () => {
+  try {
+    const result = await calculate('AAPL', 1000, 5);
+    console.log('Future Investment Value:', result);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+})();
+
+module.exports = { calculate };

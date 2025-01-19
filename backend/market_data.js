@@ -40,7 +40,7 @@ function calculateMarketReturn(data, years) {
 
     // console.log("Start price - " + startDate + ":", starting_price);
     // console.log("End price - " + endDate + ":", ending_price);
-    return parseFloat(((ending_price - starting_price) / starting_price) * 100).toFixed(2);
+    return parseFloat(((ending_price - starting_price) / starting_price));
 }
 
 async function getMarketReturn(years) {
@@ -56,7 +56,7 @@ async function getMarketReturn(years) {
         const data = response.data.observations;
         const cleanedData = cleanData(data);
         const returnRate = calculateMarketReturn(cleanedData, years);
-        // console.log(`Market return for the last ${years} years: ${returnRate}%`);
+        // console.log(returnRate);
         return returnRate;
     } catch (error) {
         // console.error('Error fetching market data:', error);
