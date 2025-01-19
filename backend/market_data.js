@@ -1,7 +1,6 @@
 const axios = require('axios');
 const express = require('express');
 require('dotenv').config();
-
 const app = express();
 const port = 3000;
 
@@ -11,47 +10,41 @@ app.use(express.json());
 function cleanData(data) {
     return data.map(item => {
         return {
-            date: new Date(item.date).toLocaleDateString('en-US'), // Format date to MM/DD/YYYY
-            value: parseFloat(item.value).toFixed(2) // Format value to 2 decimal places
+            date: new Date(item.date).toLocaleDateString('en-US'),
+            value: parseFloat(item.value).toFixed(2)
         };
     });
 }
 
 function calculateMarketReturn(data, years) {
-    // Find last valid date and value
-    let lastValidEntry = null
+    let lastValidEntry = null;
     data.forEach(entry => {
         if (entry.value !== "NaN") {
-            lastValidEntry = entry
+            lastValidEntry = entry;
         }
-    })
-    
-    // calculate date X years back
-    let endDate = lastValidEntry.date
-    let date = new Date(endDate)
-    let startDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear() - years}`
-    
-    let starting_price = 0
-    let ending_price = parseFloat(lastValidEntry.value)  // We already know this
-    
+    });
+
+    let endDate = lastValidEntry.date;
+    let date = new Date(endDate);
+    let startDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear() - years}`;
+    let starting_price = 0;
+    let ending_price = parseFloat(lastValidEntry.value);
+
     data.forEach(entry => {
         if (entry.value !== "NaN") {
             if (entry.date === startDate) {
-                starting_price = parseFloat(entry.value)
+                starting_price = parseFloat(entry.value);
             }
         }
-    })
-    
-    console.log("Start price - " + endDate + ":", starting_price)
-    console.log("End price - " + startDate + ":", ending_price)
-    
-    return parseFloat(((ending_price - starting_price) / starting_price) * 100).toFixed(2)
+    });
+
+    // console.log("Start price - " + startDate + ":", starting_price);
+    // console.log("End price - " + endDate + ":", ending_price);
+    return parseFloat(((ending_price - starting_price) / starting_price) * 100).toFixed(2);
 }
 
-// Create an endpoint to fetch SP500 data
-app.get('/api/market-return', async (req, res) => {
+async function getMarketReturn(years) {
     try {
-        // Base URL and parameters
         const fredURL = 'https://api.stlouisfed.org/fred/series/observations';
         const params = {
             series_id: 'SP500',
@@ -59,22 +52,33 @@ app.get('/api/market-return', async (req, res) => {
             file_type: 'json'
         };
 
-        // Fetch data from the API
         const response = await axios.get(fredURL, { params });
-
-        // Clean, process, and send the data
-        const cleanedData = cleanData(response.data.observations);
-        res.json(cleanedData);
-        
-        // calculate market return
-        let years = 5
-        console.log("The return from the last " + years + " years: " + calculateMarketReturn(cleanedData, years) + " %");
+        const data = response.data.observations;
+        const cleanedData = cleanData(data);
+        const returnRate = calculateMarketReturn(cleanedData, years);
+        // console.log(`Market return for the last ${years} years: ${returnRate}%`);
+        return returnRate;
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        // console.error('Error fetching market data:', error);
+        throw error;
+    }
+}
+
+// Create an API endpoint
+app.get('/market-return/:years', async (req, res) => {
+    try {
+        const years = parseInt(req.params.years);
+        const returnRate = await getMarketReturn(years);
+        res.json({ returnRate });
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch market return' });
     }
 });
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}/api/market-return`);
+    console.log(`Market return rate server running on http://localhost:${port}/market-return/:years`);
 });
+
+// Export both the app and the getMarketReturn function
+module.exports = { getMarketReturn };
