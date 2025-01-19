@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import Graph from "./Graph"; // Ensure the correct path
+import Graph from "./Graph"; 
 
 const ResultSummary = ({ result }) => {
-  const [showGraph, setShowGraph] = useState(false); // Toggle state
+  const [showGraph, setShowGraph] = useState(false);
 
   return (
     <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-lg">
-      {/* Toggle Button */}
+     
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Result Summary</h1>
         <button
@@ -17,12 +17,10 @@ const ResultSummary = ({ result }) => {
         </button>
       </div>
 
-      {/* Conditional Rendering */}
       {showGraph ? (
         <Graph />
       ) : (
         <div>
-          <h1 className="text-3xl font-bold mb-6">Result Summary</h1>
           <div className="result-overview">
             <p>
               <strong>Total Balance (USD):</strong>{" "}
