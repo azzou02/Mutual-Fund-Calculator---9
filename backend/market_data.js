@@ -49,11 +49,8 @@ function calculateMarketReturn(data, years) {
 }
 
 // Create an endpoint to fetch SP500 data
-app.get('/api/sp500', async (req, res) => {
+app.get('/api/market-return', async (req, res) => {
     try {
-        // Get optional query parameters
-        const { start_date, end_date } = req.query;
-        
         // Base URL and parameters
         const fredURL = 'https://api.stlouisfed.org/fred/series/observations';
         const params = {
@@ -61,10 +58,6 @@ app.get('/api/sp500', async (req, res) => {
             api_key: process.env.FRED_API_KEY,
             file_type: 'json'
         };
-
-        // optional parameters
-        if (start_date) params.observation_start = start_date;
-        if (end_date) params.observation_end = end_date;
 
         // Fetch data from the API
         const response = await axios.get(fredURL, { params });
@@ -83,5 +76,5 @@ app.get('/api/sp500', async (req, res) => {
 
 // Start the server
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}/api/sp500`);
+    console.log(`Server running at http://localhost:${port}/api/market-return`);
 });
