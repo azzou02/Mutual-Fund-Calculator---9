@@ -89,9 +89,31 @@ const CalculatorForm = ({ onCalculate }) => {
           } border-b-2 focus:outline-none focus:border-indigo-500 dark:border-gray-600 dark:bg-black`}
         >
           <option value="">Select a fund</option>
-          <option value="fund1">Fund 1</option>
-          <option value="fund2">Fund 2</option>
-          <option value="fund3">Fund 3</option>
+          <option value="SPY">SPDR S&P 500</option>
+          <option value="VOO">Vanguard S&P 500</option>
+          <option value="IVV">iShares Core S&P 500</option>
+          <option value="VTI"></option>
+          <option value="QQQ"></option>
+          <option value="VUG"></option>
+          <option value="VEA"></option>
+          <option value="VTV"></option>
+          <option value="BND"></option>
+          <option value="AGG"></option>
+          <option value="IEFA"></option>
+          <option value="IWF"></option>
+          <option value="IJH"></option>
+          <option value="IJR"></option>
+          <option value="VIG"></option>
+          <option value="VGT"></option>
+          <option value="VWO"></option>
+          <option value="IEMG"></option>
+          <option value="GLD"></option>
+          <option value="VXUS"></option>
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
         </select>
         {errors.mutualFund && <p className="text-red-500 text-sm mt-1">{errors.mutualFund}</p>}
       </div>

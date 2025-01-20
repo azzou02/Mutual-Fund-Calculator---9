@@ -2,27 +2,41 @@ import React, { useState } from "react";
 import Navbar from "./components/Navbar";
 import CalculatorForm from "./components/CalculatorForm";
 import ResultSummary from "./components/ResultSummary";
+import axios from "axios";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [calculatedData, setCalculatedData] = useState(null);
 
-  const handleCalculation = (formData) => {
-    const earnings = (
-      formData.initialInvestment *
-      (1 + Math.random() * 0.1) ** formData.duration
-    ).toFixed(2);
-
-    const totalBalance = (
-      Number(formData.initialInvestment) + Number(earnings)
-    ).toFixed(2);
-
-    setCalculatedData({
-      totalBalance: parseFloat(totalBalance),
-      earnings: parseFloat(earnings),
-      initialAmount: parseFloat(formData.initialInvestment),
-      duration: parseInt(formData.duration),
-    });
+  const handleCalculation = async (formData) => {
+    try {
+      // Call the API or calculate the future value
+      const response = await axios.post('http://localhost:5000/api/calculate', {
+        ticker: formData.mutualFund,
+        amount: formData.initialInvestment,
+        duration: formData.duration,
+      });
+  
+      // The result from the response should be an object containing beta, rate, and futureValue
+      const { beta, rate, futureValue, riskFreeRate } = response.data.result;
+  
+      // Calculate earnings based on initial investment and future value (totalBalance)
+      const earnings = futureValue - formData.initialInvestment;
+  
+      // Set the calculated data
+      setCalculatedData({
+        totalBalance: futureValue, // futureValue is the total balance
+        earnings: earnings,
+        initialAmount: parseFloat(formData.initialInvestment),
+        duration: parseInt(formData.duration),
+        beta: beta,  // Include beta in the result
+        rate: rate,   // Include rate in the result
+        risk: riskFreeRate, // Include riskFreeRate in the result
+      });
+  
+    } catch (error) {
+      console.error('Error calculating future value:', error);
+    }
   };
 
   return (
