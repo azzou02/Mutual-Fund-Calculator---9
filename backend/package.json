@@ -1,8 +1,18 @@
 {
   "dependencies": {
-    "express": "^4.21.2"
+    "axios": "^1.7.9",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "node-fetch": "^3.3.2"
   },
   "scripts": {
     "start": "node index.js"
-  }
+  },
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "mutual_fund_data.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
