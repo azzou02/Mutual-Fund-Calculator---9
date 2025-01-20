@@ -43,6 +43,7 @@ const App = () => {
     <div className={darkMode ? "dark bg-gray-900 text-white min-h-screen" : "bg-gray-100 text-black min-h-screen"}>
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
       <div className="container mx-auto px-4 py-8 grid grid-cols-3 gap-10">
+        
         {/* Form Section */}
         <div className="col-span-1">
           <h1 className="text-3xl font-bold mb-6">Mutual Fund Calculator</h1>
