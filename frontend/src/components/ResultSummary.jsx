@@ -5,10 +5,13 @@ const ResultSummary = ({ result }) => {
   const [showGraph, setShowGraph] = useState(false);
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg shadow-lg">
+    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
      
+      {/* Toggle Change */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Result Summary</h1>
+        <h1 className="text-3xl font-bold">
+          {showGraph ? "Graph" : "Result Summary"}
+        </h1>
         <button
           className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded shadow"
           onClick={() => setShowGraph(!showGraph)}
@@ -17,6 +20,8 @@ const ResultSummary = ({ result }) => {
         </button>
       </div>
 
+
+      {/* Main Content */}
       {showGraph ? (
         <Graph />
       ) : (
@@ -65,6 +70,7 @@ const ResultSummary = ({ result }) => {
           </table>
         </div>
       )}
+
     </div>
   );
 };

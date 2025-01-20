@@ -37,6 +37,8 @@ const CalculatorForm = ({ onCalculate }) => {
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
+      
+      {/* Initial Investment Section */}
       <div>
         <label htmlFor="initial-investment" className="block font-semibold mb-2">
           Initial Investment Amount
@@ -57,6 +59,7 @@ const CalculatorForm = ({ onCalculate }) => {
         )}
       </div>
 
+      {/* Duration Section */}
       <div>
         <label htmlFor="duration" className="block font-semibold mb-2">
           Duration (years)
@@ -75,6 +78,7 @@ const CalculatorForm = ({ onCalculate }) => {
         {errors.duration && <p className="text-red-500 text-sm mt-1">{errors.duration}</p>}
       </div>
 
+      {/* Mutual Fund Section */}
       <div>
         <label htmlFor="mutual-fund" className="block font-semibold mb-2">
           Select Mutual Fund
@@ -96,6 +100,7 @@ const CalculatorForm = ({ onCalculate }) => {
         {errors.mutualFund && <p className="text-red-500 text-sm mt-1">{errors.mutualFund}</p>}
       </div>
 
+      {/* Calculate Button */}
       <button
         type="submit"
         className="w-40 bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 focus:ring focus:ring-indigo-500"
