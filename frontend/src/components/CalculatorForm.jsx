@@ -89,31 +89,31 @@ const CalculatorForm = ({ onCalculate }) => {
           } border-b-2 focus:outline-none focus:border-indigo-500 dark:border-gray-600 dark:bg-black`}
         >
           <option value="">Select a fund</option>
-          <option value="SPY">SPDR S&P 500</option>
-          <option value="VOO">Vanguard S&P 500</option>
-          <option value="IVV">iShares Core S&P 500</option>
-          <option value="VTI"></option>
-          <option value="QQQ"></option>
-          <option value="VUG"></option>
-          <option value="VEA"></option>
-          <option value="VTV"></option>
-          <option value="BND"></option>
-          <option value="AGG"></option>
-          <option value="IEFA"></option>
-          <option value="IWF"></option>
-          <option value="IJH"></option>
-          <option value="IJR"></option>
-          <option value="VIG"></option>
-          <option value="VGT"></option>
-          <option value="VWO"></option>
-          <option value="IEMG"></option>
-          <option value="GLD"></option>
-          <option value="VXUS"></option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
+          <option value="SPY">SPDR S&P 500 ETF Trust</option>
+          <option value="VOO">Vanguard S&P 500 ETF</option>
+          <option value="IVV">iShares Core S&P 500 ETF</option>
+          <option value="VTI">Vanguard Total Stock Market ETF</option>
+          <option value="QQQ">Invesco QQQ Trust Series I</option>
+          <option value="VUG">Vanguard Growth ETF</option>
+          <option value="VEA">Vanguard FTSE Developed Markets ETF</option>
+          <option value="VTV">Vanguard Value ETF</option>
+          <option value="BND">Vanguard Total Bond Market ETF</option>
+          <option value="AGG">iShares Core U.S. Aggregate Bond ETF</option>
+          <option value="IEFA">iShares Core MSCI EAFE ETF</option>
+          <option value="IWF">iShares Russell 1000 Growth ETF</option>
+          <option value="IJH">iShares Core S&P Mid-Cap ETF</option>
+          <option value="IJR">iShares Core S&P Small-Cap ETF</option>
+          <option value="VIG">Vanguard Dividend Appreciation ETF</option>
+          <option value="VGT">Vanguard Information Technology ETF</option>
+          <option value="VWO">Vanguard FTSE Emerging Markets ETF</option>
+          <option value="IEMG">iShares Core MSCI Emerging Markets ETF</option>
+          <option value="GLD">SPDR Gold Shares</option>
+          <option value="VXUS">Vanguard Total International Stock ETF</option>
+          <option value="VO">Vanguard Mid-Cap ETF</option>
+          <option value="RSP">Invesco S&P 500® Equal Weight ETF</option>
+          <option value="IWM">iShares Russell 2000 ETF</option>
+          <option value="XLK">Technology Select Sector SPDR Fund</option>
+          <option value="SCHD">Schwab US Dividend Equity ETF</option>
         </select>
         {errors.mutualFund && <p className="text-red-500 text-sm mt-1">{errors.mutualFund}</p>}
       </div>
