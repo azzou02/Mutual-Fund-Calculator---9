@@ -19,8 +19,6 @@ const ResultSummary = ({ result }) => {
           {showGraph ? "Show Summary" : "Graphs"}
         </button>
       </div>
-
-
       {/* Main Content */}
       {showGraph ? (
         <Graph />
@@ -55,30 +53,21 @@ const ResultSummary = ({ result }) => {
               </tr>
               <tr>
                 <td className="border border-gray-300 px-4 py-2">Return Rate</td>
-                <td className="border border-gray-300 px-4 py-2">10%</td>
+                <td className="border border-gray-300 px-4 py-2">{result.rate.toFixed(4) * 100}%</td>
               </tr>
               <tr>
                 <td className="border border-gray-300 px-4 py-2">Risk Free Rate</td>
-                <td className="border border-gray-300 px-4 py-2">5%</td>
+                <td className="border border-gray-300 px-4 py-2">{result.risk * 100}%</td>
               </tr>
               <tr>
                 <td className="border border-gray-300 px-4 py-2">Mutual Fund Beta</td>
-                <td className="border border-gray-300 px-4 py-2">1.2</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">Earnings (USD)</td>
-                <td className="border border-gray-300 px-4 py-2">${result.earnings.toFixed(2)}</td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 px-4 py-2">Total Balance (USD)</td>
-                <td className="border border-gray-300 px-4 py-2">${result.totalBalance.toFixed(2)}</td>
+                <td className="border border-gray-300 px-4 py-2">{result.beta.toFixed(2)}</td>
               </tr>
             </tbody>
           </table>
 
         </div>
       )}
-
     </div>
   );
 };
