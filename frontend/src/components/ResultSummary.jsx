@@ -53,7 +53,7 @@ const ResultSummary = ({ result }) => {
               </tr>
               <tr>
                 <td className="border border-gray-300 px-4 py-2">Return Rate</td>
-                <td className="border border-gray-300 px-4 py-2">{result.rate.toFixed(4) * 100}%</td>
+                <td className="border border-gray-300 px-4 py-2">{(result.rate * 100).toFixed(2)}%</td>
               </tr>
               <tr>
                 <td className="border border-gray-300 px-4 py-2">Risk Free Rate</td>
