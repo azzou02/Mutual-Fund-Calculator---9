@@ -25,21 +25,21 @@ const ResultSummary = ({ result }) => {
       ) : (
         <div>
           <div className="result-overview">
-            <p>
+            <p className="mb-2">
               <strong>Total Balance (USD):</strong>{" "}
               <span className="total-balance">${result.totalBalance.toFixed(2)}</span>
             </p>
-            <p>
+            <p className="mb-4">
               <strong>Earnings (USD):</strong>{" "}
               <span className="earnings">${result.earnings.toFixed(2)}</span>
             </p>
           </div>
 
-          <table className="table-auto w-full border-collapse border border-gray-300">
+          <table className="table-auto w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
             <thead>
               <tr>
-                <th className="border border-gray-300 px-4 py-2 bg-gray-100 text-left">Field</th>
-                <th className="border border-gray-300 px-4 py-2 bg-gray-100 text-left">Value</th>
+                <th className="border border-gray-300 px-4 py-2 bg-gray-200 text-left dark:text-black">Field</th>
+                <th className="border border-gray-300 px-4 py-2 bg-gray-200 text-left dark:text-black">Value</th>
               </tr>
             </thead>
             <tbody>

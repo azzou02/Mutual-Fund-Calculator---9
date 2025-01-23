@@ -152,3 +152,7 @@ app.get('/api/index-beta/:index', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+app.get('/', (req, res) => {
+  res.send('Backend is running!');
+});
