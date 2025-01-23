@@ -3,7 +3,7 @@ const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
 const app = express();
-const port = 5000;
+const port = process.env.PORT || 5001;
 
 const RISK_FREE_RATE = 0.0479; // from US Treasury
 
@@ -148,4 +148,8 @@ app.get('/api/index-beta/:index', async (req, res) => {
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
+});
+
+app.get('/', (req, res) => {
+  res.send('Backend is running!');
 });
