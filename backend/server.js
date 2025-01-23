@@ -3,14 +3,14 @@ const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
 const app = express();
-const port = process.env.PORT || 5001;
+const port = 5001;
 
 const RISK_FREE_RATE = 0.0479; // from US Treasury
 
 app.use(cors());
 app.use(express.json());
 
-// Function to clean and handle the data
+// Cleans and formats an array of data objects.
 function cleanData(data) {
     return data.map(item => {
         return {
@@ -20,6 +20,7 @@ function cleanData(data) {
     });
 }
 
+// Calculates the market return over a specified number of years based on provided data.
 function calculateMarketReturn(data, years) {
     let lastValidEntry = null;
     data.forEach(entry => {
@@ -37,7 +38,6 @@ function calculateMarketReturn(data, years) {
     let startDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear() - years}`;
     let starting_price = 0;
 
-    // Logic to find starting_price based on startDate
     for (let entry of data) {
         if (entry.date === startDate) {
             starting_price = parseFloat(entry.value);
@@ -54,6 +54,7 @@ function calculateMarketReturn(data, years) {
     return marketReturn;
 }
 
+// Fetches the market return rate for the S&P 500 index over a specified number of years.
 async function getMarketReturn(years) {
     try {
         const fredURL = 'https://api.stlouisfed.org/fred/series/observations';
@@ -74,6 +75,7 @@ async function getMarketReturn(years) {
     }
 }
 
+// Fetches the beta value of a given stock index.
 async function getBeta(index) {
     try {
         const betaURL = 'https://api.newtonanalytics.com/stock-beta';
@@ -92,6 +94,7 @@ async function getBeta(index) {
     }
 }
 
+// Calculates the future value of an investment based on the given ticker, amount, and duration.
 async function calculateFutureValue(ticker, amount, duration) {
   try {
     const marketReturnRate = await getMarketReturn(1);

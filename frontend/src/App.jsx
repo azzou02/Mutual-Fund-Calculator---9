@@ -11,7 +11,7 @@ const App = () => {
   const handleCalculation = async (formData) => {
     try {
       // Call the API or calculate the future value
-      const response = await axios.post('http://localhost:5000/api/calculate', {
+      const response = await axios.post('http://localhost:5001/api/calculate', {
         ticker: formData.mutualFund,
         amount: formData.initialInvestment,
         duration: formData.duration,
