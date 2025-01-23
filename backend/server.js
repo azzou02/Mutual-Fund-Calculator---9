@@ -3,7 +3,7 @@ const cors = require('cors');
 const axios = require('axios');
 require('dotenv').config();
 const app = express();
-const port = 5000;
+const port = 5001;
 
 const RISK_FREE_RATE = 0.0479; // from US Treasury
 
