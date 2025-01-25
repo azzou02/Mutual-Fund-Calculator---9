@@ -1,26 +1,28 @@
 import React, { useState } from "react";
 import Graph from "./Graph";
 
-const ResultSummary = ({ result }) => {
+const ResultSummary = ({ result, hasGraphToggle }) => {
   const [showGraph, setShowGraph] = useState(false);
 
   return (
     <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
+      {/* Show the toggle only for the first summary */}
+      {hasGraphToggle && (
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-3xl font-bold">
+            {showGraph ? "Graph" : "Result Summary"}
+          </h1>
+          <button
+            className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded shadow"
+            onClick={() => setShowGraph(!showGraph)}
+          >
+            {showGraph ? "Show Summary" : "Graphs"}
+          </button>
+        </div>
+      )}
 
-      {/* Toggle Change */}
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">
-          {showGraph ? "Graph" : "Result Summary"}
-        </h1>
-        <button
-          className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded shadow"
-          onClick={() => setShowGraph(!showGraph)}
-        >
-          {showGraph ? "Show Summary" : "Graphs"}
-        </button>
-      </div>
       {/* Main Content */}
-      {showGraph ? (
+      {showGraph && hasGraphToggle ? (
         <Graph />
       ) : (
         <div>
@@ -65,7 +67,6 @@ const ResultSummary = ({ result }) => {
               </tr>
             </tbody>
           </table>
-
         </div>
       )}
     </div>
