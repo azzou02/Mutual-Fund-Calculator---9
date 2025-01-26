@@ -1,25 +1,24 @@
 import React, { useState } from "react";
 import Graph from "./Graph";
 
-const ResultSummary = ({ result, hasGraphToggle }) => {
+const ResultSummary = ({ result, hasGraphToggle, mutualFund }) => {
   const [showGraph, setShowGraph] = useState(false);
 
   return (
     <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
-      {/* Show the toggle only for the first summary */}
-      {hasGraphToggle && (
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">
-            {showGraph ? "Graph" : "Result Summary"}
-          </h1>
+    
+      {/* Show the graph toggle on first summary section */}
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-2xl font-bold">{mutualFund} Summary</h2>
+        {hasGraphToggle && (
           <button
             className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded shadow"
             onClick={() => setShowGraph(!showGraph)}
           >
-            {showGraph ? "Show Summary" : "Graphs"}
+            {showGraph ? "Show Summary" : "Show Graph"}
           </button>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Main Content */}
       {showGraph && hasGraphToggle ? (

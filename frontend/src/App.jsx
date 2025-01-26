@@ -6,78 +6,67 @@ import axios from "axios";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
-  const [calculatedData, setCalculatedData] = useState(null);
+  const [calculatedData, setCalculatedData] = useState([]);
 
   const handleCalculation = async (formData) => {
     try {
-      const response = await axios.post("http://localhost:5001/api/calculate", {
-        ticker: formData.mutualFund,
-        amount: formData.initialInvestment,
-        duration: formData.duration,
-      });
+      const results = await Promise.all(
+        formData.mutualFund.map(async (fund) => {
+          const response = await axios.post("http://localhost:5001/api/calculate", {
+            ticker: fund,
+            amount: formData.initialInvestment,
+            duration: formData.duration,
+          });
+          const { beta, rate, futureValue, riskFreeRate } = response.data.result;
+          const earnings = futureValue - formData.initialInvestment;
 
-      const { beta, rate, futureValue, riskFreeRate } = response.data.result;
-      const earnings = futureValue - formData.initialInvestment;
+          return {
+            mutualFund: fund, // Include mutual fund name
+            totalBalance: futureValue,
+            earnings: earnings,
+            initialAmount: parseFloat(formData.initialInvestment),
+            duration: parseInt(formData.duration),
+            beta: beta,
+            rate: rate,
+            risk: riskFreeRate,
+          };
+        })
+      );
 
-      setCalculatedData({
-        totalBalance: futureValue,
-        earnings: earnings,
-        initialAmount: parseFloat(formData.initialInvestment),
-        duration: parseInt(formData.duration),
-        beta: beta,
-        rate: rate,
-        risk: riskFreeRate,
-      });
+      setCalculatedData(results); // Store results array
     } catch (error) {
-      console.error("Error calculating future value:", error);
+      console.error("Error calculating future values:", error);
     }
   };
 
   return (
     <div className={darkMode ? "dark bg-gray-900 text-white min-h-screen" : "bg-gray-100 text-black min-h-screen"}>
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-      <div className="container mx-auto px-4 py-8 space-y-10">
+      <div className="container mx-auto px-4 py-8 grid grid-cols-3 gap-10">
         
         {/* Form Section */}
-        <div>
+        <div className="col-span-1">
           <h1 className="text-3xl font-bold mb-6">Mutual Fund Calculator</h1>
           <CalculatorForm onCalculate={handleCalculation} />
         </div>
 
         {/* Result Summaries */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* First Result Summary with Graph Toggle */}
-          <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-lg">
-            {calculatedData ? (
-              <ResultSummary result={calculatedData} hasGraphToggle={true} />
-            ) : (
+        <div className="col-span-2">
+          {calculatedData.length > 0
+            ? calculatedData.map((data, index) => (
+                <div key={index} className="my-8 bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-lg">
+                  <ResultSummary
+                    result={data}
+                    hasGraphToggle={index == 0}
+                    mutualFund={data.mutualFund} // Pass mutual fund name as a prop
+                  />
+                </div>
+              ))
+            : (
               <p className="text-gray-500 dark:text-gray-300">
-                First result summary will appear here after calculation.
+                Results will appear here after calculation.
               </p>
             )}
-          </div>
-
-          {/* Second Result Summary without Graph Toggle */}
-          <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-lg">
-            {calculatedData ? (
-              <ResultSummary result={calculatedData} hasGraphToggle={false} />
-            ) : (
-              <p className="text-gray-500 dark:text-gray-300">
-                Second result summary will appear here after calculation.
-              </p>
-            )}
-          </div>
-
-          {/* Third Result Summary without Graph Toggle */}
-          <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-lg">
-            {calculatedData ? (
-              <ResultSummary result={calculatedData} hasGraphToggle={false} />
-            ) : (
-              <p className="text-gray-500 dark:text-gray-300">
-                Third result summary will appear here after calculation.
-              </p>
-            )}
-          </div>
         </div>
       </div>
     </div>

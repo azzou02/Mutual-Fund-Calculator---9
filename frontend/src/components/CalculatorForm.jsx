@@ -4,7 +4,7 @@ const CalculatorForm = ({ onCalculate }) => {
   const [formData, setFormData] = useState({
     initialInvestment: "",
     duration: "",
-    mutualFund: "",
+    mutualFund: [],
   });
   const [errors, setErrors] = useState({});
 
@@ -16,8 +16,8 @@ const CalculatorForm = ({ onCalculate }) => {
     if (!formData.duration || formData.duration <= 0) {
       newErrors.duration = "Please enter a valid duration in years.";
     }
-    if (!formData.mutualFund) {
-      newErrors.mutualFund = "Please select a mutual fund.";
+    if (formData.mutualFund.length === 0) {
+      newErrors.mutualFund = "Please select at least one mutual fund.";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -30,6 +30,20 @@ const CalculatorForm = ({ onCalculate }) => {
     }
   };
 
+  const handleMutualFundChange = (e) => {
+    const selectedOptions = Array.from(e.target.selectedOptions, (option) => option.value);
+
+    if (selectedOptions.length > 3) {
+      setErrors((prev) => ({
+        ...prev,
+        mutualFund: "You can select up to 3 mutual funds only.",
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, mutualFund: null }));
+      setFormData((prev) => ({ ...prev, mutualFund: selectedOptions }));
+    }
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -37,7 +51,6 @@ const CalculatorForm = ({ onCalculate }) => {
 
   return (
     <form className="space-y-4" onSubmit={handleSubmit}>
-      
       {/* Initial Investment Section */}
       <div>
         <label htmlFor="initial-investment" className="block font-semibold mb-2">
@@ -50,7 +63,7 @@ const CalculatorForm = ({ onCalculate }) => {
           value={formData.initialInvestment}
           onChange={handleInputChange}
           placeholder="Enter initial amount"
-          className={`w-full p-3 rounded-lg ${
+          className={`w-80 p-3 rounded-lg ${
             errors.initialInvestment ? "border-red-500" : "border-gray-300"
           } border-b-2 focus:outline-none focus:border-indigo-500 dark:border-gray-600 dark:bg-black`}
         />
@@ -71,7 +84,7 @@ const CalculatorForm = ({ onCalculate }) => {
           value={formData.duration}
           onChange={handleInputChange}
           placeholder="Enter duration in years"
-          className={`w-full p-3 rounded-lg ${
+          className={`w-80 p-3 rounded-lg ${
             errors.duration ? "border-red-500" : "border-gray-300"
           } border-b-2 focus:outline-none focus:border-indigo-500 dark:border-gray-600 dark:bg-black`}
         />
@@ -81,18 +94,18 @@ const CalculatorForm = ({ onCalculate }) => {
       {/* Mutual Fund Section */}
       <div>
         <label htmlFor="mutual-fund" className="block font-semibold mb-2">
-          Select Mutual Fund
+          Select Mutual Funds (up to 3)
         </label>
         <select
           id="mutual-fund"
           name="mutualFund"
           value={formData.mutualFund}
-          onChange={handleInputChange}
-          className={`w-full p-3 rounded-lg ${
+          onChange={handleMutualFundChange}
+          multiple
+          className={`w-80 p-3 rounded-lg ${
             errors.mutualFund ? "border-red-500" : "border-gray-300"
           } border-b-2 focus:outline-none focus:border-indigo-500 dark:border-gray-600 dark:bg-black`}
         >
-          <option value="">Select a fund</option>
           <option value="SPY">SPDR S&P 500 ETF Trust</option>
           <option value="VOO">Vanguard S&P 500 ETF</option>
           <option value="IVV">iShares Core S&P 500 ETF</option>
