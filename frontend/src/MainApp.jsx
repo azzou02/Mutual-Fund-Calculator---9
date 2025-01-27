@@ -39,6 +39,12 @@ const MainApp = () => {
     }
   };
 
+   // Find the fund with the highest earnings
+  const highestEarningFund =
+    calculatedData.length > 0
+      ? calculatedData.reduce((max, fund) => (fund.earnings > max.earnings ? fund : max), calculatedData[0])
+      : null;
+
   return (
     <div className={darkMode ? "dark bg-gray-900 text-white min-h-screen" : "bg-gray-100 text-black min-h-screen"}>
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
@@ -54,7 +60,12 @@ const MainApp = () => {
         <div className="col-span-2">
           {calculatedData.length > 0
             ? calculatedData.map((data, index) => (
-                <div key={index} className="my-8 bg-gray-50 dark:bg-gray-700 p-6 rounded-lg shadow-lg">
+                <div key={index} className={`my-8 p-6 rounded-lg shadow-lg ${
+                  highestEarningFund && data.mutualFund === highestEarningFund.mutualFund
+                    ? "bg-green-200 dark:bg-green-800" // Highlight the highest earning fund
+                    : "bg-gray-50 dark:bg-gray-700"
+                }`}
+                >
                   <ResultSummary
                     result={data}
                     hasGraphToggle={index == 0}

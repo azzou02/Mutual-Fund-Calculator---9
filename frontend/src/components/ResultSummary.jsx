@@ -19,6 +19,8 @@ const ResultSummary = ({ result, hasGraphToggle, mutualFund }) => {
           </button>
         )}
       </div>
+
+      {/* Link to Yahoo Finance */}
       <h3 className="mb-2 underline">
         <a 
           href={`https://finance.yahoo.com/quote/${mutualFund}`} 
@@ -41,7 +43,10 @@ const ResultSummary = ({ result, hasGraphToggle, mutualFund }) => {
             </p>
             <p className="mb-4 text-lg">
               <strong>Earnings (USD):</strong>{" "}
-              <span className="earnings">${result.earnings.toFixed(2)}</span>
+              <span 
+                className={result.earnings >= 0 ? "text-green-600" : "text-red-600"}
+              >
+                ${result.earnings.toFixed(2)}</span>
             </p>
           </div>
 
