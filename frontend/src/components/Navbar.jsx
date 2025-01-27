@@ -9,7 +9,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
       <div className="container mx-auto flex justify-between items-center">
         {/* App Name */}
         <h1 className="text-2xl font-bold">Goldman Sachs</h1>
-
+        
         
         <div className="flex items-center space-x-4">
           {/* Dark Mode Toggle */}
