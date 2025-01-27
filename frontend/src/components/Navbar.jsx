@@ -9,13 +9,13 @@ const Navbar = ({ darkMode, setDarkMode }) => {
       <div className="container mx-auto flex justify-between items-center">
         {/* App Name */}
         <h1 className="text-2xl font-bold">Goldman Sachs</h1>
-
+        
         
         <div className="flex items-center space-x-4">
           {/* Dark Mode Toggle */}
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded"
+            className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded hover:bg-gray-400 transition duration-150"
           >
             {darkMode ? "Light Mode" : "Dark Mode"}
           </button>
@@ -28,7 +28,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
                 alt="User"
                 className="w-8 h-8 rounded-full"
               />
-              <span className="text-sm">{user.name}</span>
+              <span className="text-sm">{user.nickname}</span>
             </div>
           )}
 
@@ -40,7 +40,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
                   returnTo: window.location.origin, // Redirects to the home page after logout
                 })
               }
-              className="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700"
+              className="bg-indigo-600 text-white px-4 py-2 rounded font-semibold hover:bg-indigo-700 transition duration-150"
             >
               Log Out
             </button>

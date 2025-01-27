@@ -14,6 +14,7 @@ createRoot(document.getElementById("root")).render(
         redirect_uri: window.location.origin, // Redirect URI
         prompt: "login", // Force login form on every redirect
       }}
+      cacheLocation="localstorage" // Enables persistence across page reloads
     >
       <BrowserRouter>
         <App />
