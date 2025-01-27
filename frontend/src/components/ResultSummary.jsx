@@ -5,7 +5,7 @@ const ResultSummary = ({ result, hasGraphToggle, mutualFund }) => {
   const [showGraph, setShowGraph] = useState(false);
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-700 p-2 rounded-lg">
+    <div className="bg-gray-50 dark:bg-gray-800 p-2 rounded-lg">
     
       {/* Show the graph toggle on first summary section */}
       <div className="flex justify-between items-center mb-6">
@@ -52,7 +52,7 @@ const ResultSummary = ({ result, hasGraphToggle, mutualFund }) => {
             <p className="mb-4 text-lg">
               <strong>Earnings (USD):</strong>{" "}
               <span 
-                className={result.earnings >= 0 ? "text-green-600" : "text-red-600"}
+                className={result.earnings >= 0 ? "font-semibold text-green-600 dark:text-green-300" : "text-red-600"}
               >
                 ${result.earnings.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
@@ -62,8 +62,8 @@ const ResultSummary = ({ result, hasGraphToggle, mutualFund }) => {
           <table className="table-auto w-full border-collapse border border-gray-300 rounded-lg overflow-hidden">
             <thead>
               <tr>
-                <th className="border border-gray-300 px-4 py-2 bg-gray-200 text-left dark:text-black">Field</th>
-                <th className="border border-gray-300 px-4 py-2 bg-gray-200 text-left dark:text-black">Value</th>
+                <th className="border border-gray-300 px-4 py-2 bg-gray-200 text-left dark:bg-gray-900">Field</th>
+                <th className="border border-gray-300 px-4 py-2 bg-gray-200 text-left dark:bg-gray-900">Value</th>
               </tr>
             </thead>
             <tbody>

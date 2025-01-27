@@ -15,14 +15,14 @@ const Navbar = ({ darkMode, setDarkMode }) => {
           {/* Dark Mode Toggle */}
           <button
             onClick={() => setDarkMode(!darkMode)}
-            className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded hover:bg-gray-400 transition duration-150"
+            className="bg-gray-300 dark:bg-gray-600 text-black font-medium dark:text-white px-4 py-2 rounded hover:bg-gray-400 transition duration-150"
           >
             {darkMode ? "Light Mode" : "Dark Mode"}
           </button>
 
           {/* User Info (Optional) */}
           {isAuthenticated && user && (
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 border-solid">
               <img
                 src={user.picture}
                 alt="User"
@@ -41,7 +41,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
                 })
               }
 
-              className="bg-indigo-600 text-white px-4 py-2 rounded font-semibold hover:bg-indigo-700 transition duration-150"
+              className="bg-indigo-600 text-white px-4 py-2 rounded font-medium hover:bg-indigo-800 transition duration-150"
             >
               Log Out
             </button>
