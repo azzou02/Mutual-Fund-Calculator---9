@@ -9,10 +9,25 @@ const ResultSummary = ({ result, hasGraphToggle, mutualFund }) => {
     
       {/* Show the graph toggle on first summary section */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">{mutualFund} Summary</h2>
+        <div className="flex justify-between items-center gap-4">
+          <h2 className="text-2xl font-bold">{mutualFund} Summary</h2>
+
+          {/* Link to Yahoo Finance */}
+          <h3 className="bg-violet-700 dark:bg-violet-600 text-white dark:text-white px-4 py-2 rounded-full shadow">
+            <a 
+              href={`https://finance.yahoo.com/quote/${mutualFund}`} 
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
+              YFinance
+            </a>
+          </h3>
+        </div>
+        
+
         {hasGraphToggle && (
           <button
-            className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded shadow"
+            className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded"
             onClick={() => setShowGraph(!showGraph)}
           >
             {showGraph ? "Show Summary" : "Show Graph"}
@@ -20,33 +35,27 @@ const ResultSummary = ({ result, hasGraphToggle, mutualFund }) => {
         )}
       </div>
 
-      {/* Link to Yahoo Finance */}
-      <h3 className="mb-2 underline">
-        <a 
-          href={`https://finance.yahoo.com/quote/${mutualFund}`} 
-          target="_blank" 
-          rel="noopener noreferrer"
-        >
-          Link to {mutualFund} Data
-        </a>
-      </h3>
+      
 
       {/* Main Content */}
       {showGraph && hasGraphToggle ? (
         <Graph />
       ) : (
         <div>
-          <div className="result-overview">
+          <div className="resu  lt-overview">
             <p className="mb-2 text-lg">
               <strong>Total Balance (USD):</strong>{" "}
-              <span className="total-balance">${result.totalBalance.toFixed(2)}</span>
+              <span className="total-balance">
+                ${result.totalBalance.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
             </p>
             <p className="mb-4 text-lg">
               <strong>Earnings (USD):</strong>{" "}
               <span 
                 className={result.earnings >= 0 ? "text-green-600" : "text-red-600"}
               >
-                ${result.earnings.toFixed(2)}</span>
+                ${result.earnings.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
             </p>
           </div>
 
@@ -60,7 +69,7 @@ const ResultSummary = ({ result, hasGraphToggle, mutualFund }) => {
             <tbody>
               <tr>
                 <td className="border border-gray-300 px-4 py-2">Initial Investment (USD)</td>
-                <td className="border border-gray-300 px-4 py-2">${result.initialAmount.toFixed(2)}</td>
+                <td className="border border-gray-300 px-4 py-2">${result.initialAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
               </tr>
               <tr>
                 <td className="border border-gray-300 px-4 py-2">Time Horizon</td>

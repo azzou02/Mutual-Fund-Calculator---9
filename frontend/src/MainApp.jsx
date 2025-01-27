@@ -60,10 +60,10 @@ const MainApp = () => {
         <div className="col-span-2">
           {calculatedData.length > 0
             ? calculatedData.map((data, index) => (
-                <div key={index} className={`my-8 p-6 rounded-lg shadow-lg ${
+                <div key={index} className={`my-8 p-4 rounded-lg shadow-lg ${
                   highestEarningFund && data.mutualFund === highestEarningFund.mutualFund
-                    ? "bg-green-200 dark:bg-green-800" // Highlight the highest earning fund
-                    : "bg-gray-50 dark:bg-gray-700"
+                    ? "bg-gray-50 border-4 border-green-200 dark:border-green-800" // Highlight the highest earning fund
+                    : "bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600"
                 }`}
                 >
                   <ResultSummary
