@@ -75,7 +75,7 @@ const Graph = () => {
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-700 p-6 rounded-lg dark: ">
+    <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg dark: ">
       {loading ? (
         <p className="text-gray-500 dark:text-gray-100">Loading graph...</p>
       ) : (
