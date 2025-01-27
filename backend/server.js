@@ -5,6 +5,38 @@ require('dotenv').config();
 const app = express();
 const port = 5001;
 
+const mongoose = require('mongoose');
+const mongoURI = 'mongodb+srv://holepiyu:YepsCZpFEHPUZbTr@piyush11.vin4v.mongodb.net/?retryWrites=true&w=majority&appName=piyush11';
+
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+const InvestmentSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    required: true
+  },
+  fundTicker: {
+    type: String,
+    required: true
+  },
+  quantity: {
+    type: Number,
+    required: true
+  },
+  purchaseDate: {
+    type: Date,
+    required: true
+  },
+  purchasePrice: {
+    type: Number,
+    required: true
+  }
+}, { timestamps: true });
+
+module.exports = mongoose.model('Investment', InvestmentSchema);
+
 const RISK_FREE_RATE = 0.0479; // from US Treasury
 
 app.use(cors());
