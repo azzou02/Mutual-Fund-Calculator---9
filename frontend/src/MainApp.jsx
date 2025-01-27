@@ -63,7 +63,7 @@ const MainApp = () => {
                 <div key={index} className={`my-8 p-4 rounded-lg shadow-lg ${
                   highestEarningFund && data.mutualFund === highestEarningFund.mutualFund
                     ? "bg-gray-50 border-4 border-green-300 dark:bg-gray-800 dark:border-green-500" // Highlight the highest earning fund
-                    : "bg-gray-50 dark:bg-gray-700"
+                    : "bg-gray-50 dark:bg-gray-800"
                 }`}
                 >
                   <ResultSummary
