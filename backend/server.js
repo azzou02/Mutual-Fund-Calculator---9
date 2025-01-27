@@ -1,12 +1,17 @@
+// Environment variables
+require('dotenv').config();
+
+// External libraries
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const axios = require('axios');
-require('dotenv').config();
 
+// Express setup
 const app = express();
 const port = 5001;
 
+// Middleware setup
 app.use(cors());
 app.use(express.json());
 
