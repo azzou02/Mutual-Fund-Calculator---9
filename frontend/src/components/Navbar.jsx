@@ -1,16 +1,19 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Navbar = ({ darkMode, setDarkMode }) => {
-  const { logout, user, isAuthenticated } = useAuth0(); // Auth0 hooks for logout and user info
+  const { logout, user, isAuthenticated } = useAuth0(); // Auth0 hooks
 
   return (
     <nav className="bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4">
       <div className="container mx-auto flex justify-between items-center">
-        {/* App Name */}
-        <h1 className="text-2xl font-bold">Goldman Sachs</h1>
-        
-        
+        {/* App Logo */}
+        <h1 className="text-2xl font-bold">
+          <Link to="/">Goldman Sachs</Link>
+        </h1>
+
+      
         <div className="flex items-center space-x-4">
           {/* Dark Mode Toggle */}
           <button
@@ -19,6 +22,16 @@ const Navbar = ({ darkMode, setDarkMode }) => {
           >
             {darkMode ? "Light Mode" : "Dark Mode"}
           </button>
+
+          {/* Navigation Links */}
+          {isAuthenticated && (
+            <Link
+              to="/past-investments"
+              className="text-indigo-600 dark:text-indigo-300 font-semibold hover:underline"
+            >
+              Past Investments
+            </Link>
+          )}
 
           {/* User Info (Optional) */}
           {isAuthenticated && user && (
@@ -37,7 +50,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
             <button
               onClick={() =>
                 logout({
-                  returnTo: window.location.origin, // Redirects to the home page after logout
+                  returnTo: window.location.origin, // Redirect to home after logout
                 })
               }
 
