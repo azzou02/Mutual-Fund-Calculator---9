@@ -1,18 +1,24 @@
+// src/App.jsx
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Routes, Route } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
-import MainApp from "./MainApp"; // Main application after login
+import MainApp from "./MainApp";
+import PastInvestments from "./components/PastInvestment";
 
 const App = () => {
-  const { isAuthenticated } = useAuth0(); // Check if the user is authenticated
+  const { isAuthenticated } = useAuth0();
 
-  // If the user is not authenticated, show the login page
   if (!isAuthenticated) {
     return <LoginPage />;
   }
 
-  // If the user is authenticated, show the main app
-  return <MainApp />;
+  return (
+    <Routes>
+      <Route path="/" element={<MainApp />} />
+      <Route path="/past-investments" element={<PastInvestments />} />
+    </Routes>
+  );
 };
 
 export default App;

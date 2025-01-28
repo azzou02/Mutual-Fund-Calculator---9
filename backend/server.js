@@ -18,91 +18,91 @@ app.use(express.json());
 const RISK_FREE_RATE = 0.0479; // from US Treasury
 
 mongoose.connect(process.env.MONGODB_URI)
-.then(() => { console.log('MongoDB connected') })
-.catch(err => { console.log(err) });
+  .then(() => { console.log('MongoDB connected') })
+  .catch(err => { console.log(err) });
 
 // Cleans and formats an array of data objects.
 function cleanData(data) {
-    return data.map(item => {
-        return {
-            date: new Date(item.date).toLocaleDateString('en-US'),
-            value: parseFloat(item.value).toFixed(2)
-        };
-    });
+  return data.map(item => {
+    return {
+      date: new Date(item.date).toLocaleDateString('en-US'),
+      value: parseFloat(item.value).toFixed(2)
+    };
+  });
 }
 
 // Calculates the market return over a specified number of years based on provided data.
 function calculateMarketReturn(data, years) {
-    let lastValidEntry = null;
-    data.forEach(entry => {
-        if (!isNaN(entry.value)) {
-            lastValidEntry = entry;
-        }
-    });
+  const validEntries = data.filter(entry => !isNaN(entry.value));
+  if (validEntries.length === 0) {
+    throw new Error('No valid data entries found');
+  }
 
-    if (!lastValidEntry) {
-        throw new Error('No valid data entries found');
+  const lastValidEntry = validEntries[validEntries.length - 1];
+  const endDate = new Date(lastValidEntry.date);
+  const startYear = endDate.getFullYear() - years;
+
+  // Find the entry closest to the desired start date
+  let closestEntry = null;
+  for (const entry of validEntries) {
+    const entryDate = new Date(entry.date);
+    if (entryDate.getFullYear() === startYear) {
+      closestEntry = entry;
+      break;
     }
-
-    let endDate = lastValidEntry.date;
-    let date = new Date(endDate);
-    let startDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear() - years}`;
-    let starting_price = 0;
-
-    for (let entry of data) {
-        if (entry.date === startDate) {
-            starting_price = parseFloat(entry.value);
-            break;
-        }
+    if (!closestEntry || entryDate > new Date(closestEntry.date) && entryDate <= new Date(startYear + 1, 0, 1)) {
+      closestEntry = entry;
     }
+  }
 
-    if (starting_price === 0) {
-        throw new Error('Starting price not found');
-    }
+  if (!closestEntry) {
+    throw new Error('Starting price not found');
+  }
 
-    let ending_price = parseFloat(lastValidEntry.value);
-    let marketReturn = (ending_price - starting_price) / starting_price;
-    return marketReturn;
+  const startingPrice = parseFloat(closestEntry.value);
+  const endingPrice = parseFloat(lastValidEntry.value);
+  const marketReturn = (endingPrice - startingPrice) / startingPrice;
+  return marketReturn;
 }
 
 // Fetches the market return rate for the S&P 500 index over a specified number of years.
 async function getMarketReturn(years) {
-    try {
-        const fredURL = 'https://api.stlouisfed.org/fred/series/observations';
-        const params = {
-            series_id: 'SP500',
-            api_key: process.env.FRED_API_KEY,
-            file_type: 'json'
-        };
+  try {
+    const fredURL = 'https://api.stlouisfed.org/fred/series/observations';
+    const params = {
+      series_id: 'SP500',
+      api_key: process.env.FRED_API_KEY,
+      file_type: 'json'
+    };
 
-        const response = await axios.get(fredURL, { params });
-        const data = response.data.observations;
-        const cleanedData = cleanData(data);
-        const returnRate = calculateMarketReturn(cleanedData, years);
-        return returnRate;
-    } catch (error) {
-        console.error('Error fetching market data:', error);
-        throw error;
-    }
+    const response = await axios.get(fredURL, { params });
+    const data = response.data.observations;
+    const cleanedData = cleanData(data);
+    const returnRate = calculateMarketReturn(cleanedData, years);
+    return returnRate;
+  } catch (error) {
+    console.error('Error fetching market data:', error);
+    throw error;
+  }
 }
 
 // Fetches the beta value of a given stock index.
 async function getBeta(index) {
-    try {
-        const betaURL = 'https://api.newtonanalytics.com/stock-beta';
-        const params = {
-            ticker: index,
-            index: '^GSPC',
-            interval: '1mo',
-            observations: '12'
-        };
-        
-        const response = await axios.get(betaURL, { params });
-        return response.data.data;
-    } catch (error) {
-        console.error('Error fetching beta:', error);
-        throw error;
-    }
+  try {
+    const betaURL = 'https://api.newtonanalytics.com/stock-beta';
+    const params = {
+      ticker: index,
+      index: '^GSPC',
+      interval: '1mo',
+      observations: '12'
+    };
+
+    const response = await axios.get(betaURL, { params });
+    return response.data.data;
+  } catch (error) {
+    console.error('Error fetching beta:', error);
+    throw error;
+  }
 }
 
 // Calculates the future value of an investment based on the given ticker, amount, and duration.
@@ -112,13 +112,13 @@ async function calculateFutureValue(ticker, amount, duration) {
     const beta = await getBeta(ticker);
     const rate = RISK_FREE_RATE + beta * (marketReturnRate - RISK_FREE_RATE);
     const futureValue = amount * Math.exp(rate * duration);
-    
+
     return {
-        beta: beta,
-        rate: rate,
-        futureValue: futureValue,
-        riskFreeRate: RISK_FREE_RATE
-      };
+      beta: beta,
+      rate: rate,
+      futureValue: futureValue,
+      riskFreeRate: RISK_FREE_RATE
+    };
 
   } catch (error) {
     console.error('Error calculating future value:', error);
