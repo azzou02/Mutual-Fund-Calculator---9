@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Graph from "./Graph";
 
-const ResultSummary = ({ result, hasGraphToggle, mutualFund }) => {
+const ResultSummary = ({ result, hasGraphToggle, mutualFund, allFunds }) => {
   const [showGraph, setShowGraph] = useState(false);
 
   return (
@@ -24,7 +24,6 @@ const ResultSummary = ({ result, hasGraphToggle, mutualFund }) => {
           </h3>
         </div>
         
-
         {hasGraphToggle && (
           <button
             className="bg-gray-300 dark:bg-gray-600 text-black dark:text-white px-4 py-2 rounded"
@@ -35,14 +34,12 @@ const ResultSummary = ({ result, hasGraphToggle, mutualFund }) => {
         )}
       </div>
 
-      
-
       {/* Main Content */}
       {showGraph && hasGraphToggle ? (
-        <Graph />
+        <Graph funds={allFunds}/>
       ) : (
         <div>
-          <div className="resu  lt-overview">
+          <div className="result-overview">
             <p className="mb-2 text-lg">
               <strong>Total Balance (USD):</strong>{" "}
               <span className="total-balance">
