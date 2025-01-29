@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Investment = require('/investment');
+const Investment = require('../investment'); // Corrected path
 const { auth } = require('express-oauth2-jwt-bearer');
 
 const checkJwt = auth({
@@ -11,6 +11,8 @@ const checkJwt = auth({
 // Endpoint for creating a new investment
 router.post('/', checkJwt, async (req, res) => {
     try {
+        console.log('Auth header:', req.headers.authorization); // Log the auth header
+        console.log('User ID:', req.auth.payload.sub); // Log the user ID
         const { fundTicker, quantity, purchaseDate, purchasePrice } = req.body;
         const userId = req.auth.payload.sub; // Auth0 user ID
 

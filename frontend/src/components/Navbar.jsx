@@ -33,10 +33,10 @@ const Navbar = ({ darkMode, setDarkMode }) => {
             {/* Dark Mode Toggle */}
             <button
               onClick={() => setDarkMode(!darkMode)}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 bg-gray-100 dark:bg-gray-800 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-300"
             >
               {darkMode ? (
-                <SunIcon className="h-6 w-6 text-yellow-400" />
+                <SunIcon className="h-6 w-6 text-gray-200" />
               ) : (
                 <MoonIcon className="h-6 w-6 text-indigo-800" />
               )}
@@ -60,7 +60,7 @@ const Navbar = ({ darkMode, setDarkMode }) => {
             {isAuthenticated && (
               <button
                 onClick={() => logout({ returnTo: window.location.origin })}
-                className="ml-4 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
+                className="ml-4 px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-300"
               >
                 Log Out
               </button>

@@ -138,7 +138,7 @@ const CalculatorForm = ({ onCalculate }) => {
       {/* Calculate Button */}
       <button
         type="submit"
-        className="w-40 bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-800 transition duration-150 focus:ring focus:ring-indigo-500"
+        className="w-40 bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition duration-300 focus:ring focus:ring-indigo-500"
       >
         Calculate
       </button>
