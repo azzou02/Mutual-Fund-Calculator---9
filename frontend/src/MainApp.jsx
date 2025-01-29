@@ -70,6 +70,7 @@ const MainApp = () => {
                     result={data}
                     hasGraphToggle={index == 0}
                     mutualFund={data.mutualFund} // Pass mutual fund name as a prop
+                    allFunds={calculatedData} // Pass all calculated data for the graph
                   />
                 </div>
               ))
