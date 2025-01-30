@@ -179,6 +179,29 @@ app.get('/api/index-beta/:index', async (req, res) => {
   }
 });
 
+// Endpoint for graph values
+app.post('/api/earnings', async (req, res) => {
+  const { ticker, duration, amount } = req.body;
+  try {
+    if (!ticker || !duration || duration <= 0 || !amount || amount <= 0) {
+      console.error("Invalid inputs:", { ticker, duration, amount });
+      return res.status(400).json({ error: "Invalid inputs for ticker, duration, or amount" });
+    }
+    const earningsData = [];
+
+    for (let year = 1; year <= duration; year++) {
+      const { futureValue } = await calculateFutureValue(ticker, amount, year);
+      const earnings = futureValue - amount;
+      earningsData.push({ year, earnings }); // Structured as year-earnings pairs
+    }
+    res.json({ earnings: earningsData }); // Return structured data
+    
+  } catch (error) {
+    console.error("Error fetching earnings:", error);
+    res.status(500).json({ error: "Failed to fetch earnings data" });
+  }
+});
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
