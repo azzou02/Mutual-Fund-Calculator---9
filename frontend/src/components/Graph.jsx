@@ -71,7 +71,7 @@ const Graph = ({ funds }) => {
   }, [funds]);
 
   if (!chartData) {
-    return <p>Loading graph...</p>;
+    return <p>Loading graph<span className="loading-dots">...</span></p>;
   }
 
   return (
