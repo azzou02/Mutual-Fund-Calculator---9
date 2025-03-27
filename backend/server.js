@@ -12,10 +12,30 @@ const app = express();
 const port = 5001;
 
 // Middleware setup
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // Add your Vite frontend URL
+  credentials: true
+}));
 app.use(express.json());
-
 const RISK_FREE_RATE = 0.0479; // from US Treasury
+
+const { expressjwt: jwt } = require("express-jwt"); // Note the change here
+const jwksRsa = require("jwks-rsa");
+
+const checkJwt = jwt({
+  secret: jwksRsa.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
+  }),
+  audience: process.env.AUTH0_AUDIENCE,
+  issuer: `https://${process.env.AUTH0_DOMAIN}/`,
+  algorithms: ["RS256"]
+});
+
+const investmentRoutes = require('./routes/investments');
+app.use('/api/investments', checkJwt, investmentRoutes);
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => { console.log('MongoDB connected') })
